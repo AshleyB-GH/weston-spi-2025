@@ -9,7 +9,10 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        authors: 'Weston Airport',
+        description: 'Weston SPI Dashboard 2025',
+      },
     },
     {
       name: '@electron-forge/maker-zip',

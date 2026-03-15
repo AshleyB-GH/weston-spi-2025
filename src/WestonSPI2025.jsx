@@ -139,28 +139,28 @@ export default function App() {
   const activeQuarters = useMemo(() => {
     if (quarterFilter !== "All") return [quarterFilter];
     return data.quarters;
-  }, [quarterFilter]);
+  }, [quarterFilter, data]);
 
   const barData = useMemo(() => activeQuarters.map(q => ({
     quarter: q,
     ANS: data.summary[q]?.ans || 0,
     ADR: data.summary[q]?.adr || 0,
     Misc: data.summary[q]?.misc || 0,
-  })), [activeQuarters]);
+  })), [activeQuarters, data]);
 
   const ansLineData = useMemo(() => activeQuarters.map(q => {
     const s = data.summary[q] || {};
     const obj = { quarter: q };
     ANS_SPIS.forEach(k => obj[k] = s[k] || 0);
     return obj;
-  }), [activeQuarters]);
+  }), [activeQuarters, data]);
 
   const adrLineData = useMemo(() => activeQuarters.map(q => {
     const s = data.summary[q] || {};
     const obj = { quarter: q };
     ADR_SPIS.forEach(k => obj[k] = s[k] || 0);
     return obj;
-  }), [activeQuarters]);
+  }), [activeQuarters, data]);
 
   const totals = useMemo(() => ({
     total: filteredRecords.length,
@@ -179,7 +179,7 @@ export default function App() {
       count: activeQuarters.reduce((s, q) => s + (data.summary[q]?.[k] || 0), 0),
       unit: ANS_SPIS.includes(k) ? "ANS" : "ADR",
     })).filter(d => d.count > 0).sort((a,b) => b.count - a.count);
-  }, [activeQuarters]);
+  }, [activeQuarters, data]);
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;

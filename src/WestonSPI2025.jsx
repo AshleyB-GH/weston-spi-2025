@@ -111,6 +111,7 @@ const ANS_SPI_COLORS = ["#0ea5e9","#38bdf8","#7dd3fc","#0284c7","#075985"];
 const ADR_SPI_COLORS = ["#f97316","#fb923c","#fdba74","#ea580c","#c2410c"];
 
 export default function App() {
+  const [yearFilter, setYearFilter] = useState("All");
   const [quarterFilter, setQuarterFilter] = useState("All");
   const [unitFilter, setUnitFilter] = useState("Both");
   const [modal, setModal] = useState(null);
@@ -125,21 +126,29 @@ export default function App() {
 
   const data = liveData || RAW;
 
-  const quarters2025 = data.quarters.filter(q => q.startsWith("2025"));
-  const filterOptions = ["All", ...quarters2025];
+  const availableYears = useMemo(() => {
+    const years = new Set(data.quarters.map(q => q.split("-")[0]));
+    return Array.from(years).sort();
+  }, [data]);
 
   const filteredRecords = useMemo(() => {
     return data.records.filter(r => {
-      const qMatch = quarterFilter === "All" || r.quarter === quarterFilter;
+      const [yr, qtr] = (r.quarter || "").split("-");
+      const yearMatch = yearFilter === "All" || yr === yearFilter;
+      const qtrMatch = quarterFilter === "All" || qtr === quarterFilter;
       const uMatch = unitFilter === "Both" || r.department === unitFilter;
-      return qMatch && uMatch;
+      return yearMatch && qtrMatch && uMatch;
     });
-  }, [data, quarterFilter, unitFilter]);
+  }, [data, yearFilter, quarterFilter, unitFilter]);
 
   const activeQuarters = useMemo(() => {
-    if (quarterFilter !== "All") return [quarterFilter];
-    return data.quarters;
-  }, [quarterFilter, data]);
+    return data.quarters.filter(q => {
+      const [yr, qtr] = q.split("-");
+      const yearMatch = yearFilter === "All" || yr === yearFilter;
+      const qtrMatch = quarterFilter === "All" || qtr === quarterFilter;
+      return yearMatch && qtrMatch;
+    });
+  }, [data, yearFilter, quarterFilter]);
 
   const barData = useMemo(() => activeQuarters.map(q => ({
     quarter: q,
@@ -219,15 +228,20 @@ export default function App() {
             <div style={{color:"#7eb8e8",fontSize:11,letterSpacing:1.5,textTransform:"uppercase"}}>Weston Airport · ECCAIRS2 Dashboard</div>
           </div>
         </div>
-        <div style={{color:"#7eb8e8",fontSize:11,letterSpacing:1}}>Data: 2025</div>
+        <div style={{color:"#7eb8e8",fontSize:11,letterSpacing:1}}>{availableYears.length > 0 ? `Data: ${availableYears[0]}–${availableYears[availableYears.length-1]}` : ""}</div>
       </div>
 
       <div style={{padding:"24px 32px"}}>
 
         {/* FILTERS */}
         <div style={{display:"flex",gap:8,marginBottom:24,flexWrap:"wrap",alignItems:"center"}}>
+          <span style={{fontSize:11,color:"#5a7fa8",fontWeight:600,letterSpacing:1,textTransform:"uppercase",marginRight:4}}>Year</span>
+          {["All", ...availableYears].map(y => (
+            <button key={y} className={`filter-btn ${yearFilter===y?"active":""}`} onClick={() => setYearFilter(y)}>{y}</button>
+          ))}
+          <div style={{width:1,height:24,background:"#c7deff",margin:"0 8px"}} />
           <span style={{fontSize:11,color:"#5a7fa8",fontWeight:600,letterSpacing:1,textTransform:"uppercase",marginRight:4}}>Quarter</span>
-          {filterOptions.map(q => (
+          {["All","Q1","Q2","Q3","Q4"].map(q => (
             <button key={q} className={`filter-btn ${quarterFilter===q?"active":""}`} onClick={() => setQuarterFilter(q)}>{q}</button>
           ))}
           <div style={{width:1,height:24,background:"#c7deff",margin:"0 8px"}} />

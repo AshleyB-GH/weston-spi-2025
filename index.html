@@ -1,1 +1,101 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="https://AshleyB-GH.github.io/weston-spi-2025/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="https://AshleyB-GH.github.io/weston-spi-2025/logo192.png"/><link rel="manifest" href="https://AshleyB-GH.github.io/weston-spi-2025/manifest.json"/><title>React App</title><script defer="defer" src="https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.033809ff.js"></script><link href="https://AshleyB-GH.github.io/weston-spi-2025/static/css/main.e6c13ad2.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="https://AshleyB-GH.github.io/weston-spi-2025/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="https://AshleyB-GH.github.io/weston-spi-2025/logo192.png"/><link rel="manifest" href="https://AshleyB-GH.github.io/weston-spi-2025/manifest.json"/><title>React App</title><script defer="defer" src="https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.033809ff.js"></script><link href="https://AshleyB-GH.github.io/weston-spi-2025/static/css/main.e6c13ad2.css" rel="stylesheet">
+<style>
+  #auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: #1a2634;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    font-family: Arial, sans-serif;
+  }
+  #auth-box {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 40px;
+    width: 340px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    text-align: center;
+  }
+  #auth-box h2 {
+    margin: 0 0 8px;
+    color: #1a2634;
+    font-size: 1.4rem;
+  }
+  #auth-box p {
+    margin: 0 0 24px;
+    color: #555;
+    font-size: 0.9rem;
+  }
+  #auth-password {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #auth-password:focus { border-color: #2e6da4; }
+  #auth-submit {
+    width: 100%;
+    padding: 10px;
+    background: #2e6da4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #auth-submit:hover { background: #1f5080; }
+  #auth-error {
+    margin-top: 12px;
+    color: #c0392b;
+    font-size: 0.88rem;
+    display: none;
+  }
+</style>
+</head><body>
+<div id="auth-overlay">
+  <div id="auth-box">
+    <h2>Weston SPI Dashboard</h2>
+    <p>Enter the password to access this page.</p>
+    <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password"/>
+    <button id="auth-submit">Sign In</button>
+    <div id="auth-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+<noscript>You need to enable JavaScript to run this app.</noscript><div id="root" style="display:none"></div>
+<script>
+(function(){
+  var HASH = '663f249e09c848e4ee1eb59cfacad56853186271509f01bf52488c727f0a3b1e';
+  function unlock(){
+    document.getElementById('auth-overlay').style.display='none';
+    document.getElementById('root').style.display='';
+  }
+  if(sessionStorage.getItem('spi-auth')==='1'){ unlock(); return; }
+  function toHex(buf){
+    return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+  }
+  document.getElementById('auth-submit').addEventListener('click',function(){
+    var pw = document.getElementById('auth-password').value;
+    var enc = new TextEncoder().encode(pw);
+    crypto.subtle.digest('SHA-256', enc).then(function(buf){
+      if(toHex(buf)===HASH){
+        sessionStorage.setItem('spi-auth','1');
+        unlock();
+      } else {
+        document.getElementById('auth-error').style.display='block';
+      }
+    });
+  });
+  document.getElementById('auth-password').addEventListener('keydown',function(e){
+    if(e.key==='Enter') document.getElementById('auth-submit').click();
+  });
+})();
+</script>
+</body></html>

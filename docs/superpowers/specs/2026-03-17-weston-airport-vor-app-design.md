@@ -153,7 +153,9 @@ Recipient email addresses are stored in `src/config/recipients.json` and are not
 
 ## Email Delivery (EmailJS)
 
-On submit, a single EmailJS call sends the report to all selected recipients simultaneously. The email contains all form fields formatted as a readable plain-text report, plus any attached files as inline images or attachments (within EmailJS size limits).
+On submit, a single EmailJS call sends the report to all selected recipients simultaneously. The email contains all form fields formatted as a readable plain-text report, plus any attached files as inline images or attachments.
+
+**Attachment size limit:** EmailJS has a ~50KB limit per attachment. If an attached file exceeds this, the app will warn the user before submission and ask them to remove the oversized file. The report text is always sent regardless of attachment issues.
 
 **EmailJS setup required:**
 1. Create a free account at emailjs.com
@@ -217,6 +219,8 @@ To remove a location: delete its entry.
 
 > Placeholder emails shown above — replace with real addresses before deployment.
 
+> **Note:** This file is bundled into the client-side build, meaning recipient email addresses will be visible in the browser's source. This is an accepted trade-off given the no-backend requirement. Do not store passwords or API secrets here — only email addresses.
+
 ---
 
 ## Validation Rules
@@ -226,6 +230,7 @@ To remove a location: delete its entry.
 | Q1 — Report type | Required. If "Other", the free-text field is also required. |
 | Q6 — Date/time | Required. Cannot be in the future. |
 | Q7 — Location | Required. If "Other", the free-text field is also required. |
+| Q5 — ECCAIRS | Optional. No validation required. |
 | Q10 — Description | Required. Minimum 10 characters. |
 | Director | At least one of Director of ANS / Dir. Operations must be checked. |
 

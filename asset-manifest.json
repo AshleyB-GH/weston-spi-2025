@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://AshleyB-GH.github.io/weston-spi-2025/static/css/main.e6c13ad2.css",
-    "main.js": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.b253bbd5.js",
+    "main.js": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.cffbb008.js",
     "static/js/453.1f960028.chunk.js": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/453.1f960028.chunk.js",
     "index.html": "https://AshleyB-GH.github.io/weston-spi-2025/index.html",
     "main.e6c13ad2.css.map": "https://AshleyB-GH.github.io/weston-spi-2025/static/css/main.e6c13ad2.css.map",
-    "main.b253bbd5.js.map": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.b253bbd5.js.map",
+    "main.cffbb008.js.map": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/main.cffbb008.js.map",
     "453.1f960028.chunk.js.map": "https://AshleyB-GH.github.io/weston-spi-2025/static/js/453.1f960028.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.b253bbd5.js"
+    "static/js/main.cffbb008.js"
   ]
 }

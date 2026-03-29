@@ -1,21 +1,62 @@
-name: Build Windows App
+name: Build Installers
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
+
   build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npm run build
-      - run: npm run make
-      - uses: actions/upload-artifact@v4
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Make Windows installer
+        run: npm run make -- --platform win32
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
         with:
-          name: windows-app
-          path: out/make/**/*.exe
+          name: windows-installer
+          path: out/make/squirrel.windows/**/*.exe
+          if-no-files-found: error
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Make macOS zip
+        run: npm run make
+
+      - name: Upload macOS zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-zip
+          path: out/make/zip/darwin/**/*.zip
+          if-no-files-found: error

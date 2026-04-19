@@ -508,6 +508,43 @@ export default function HIRA_DWA() {
     setSavedDraft(null);
   }
 
+  function loadAssessmentFromJSON(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result;
+        const parsed = JSON.parse(typeof content === 'string' ? content : '');
+        
+        // Validate that it has the required assessment properties
+        if (!parsed.assessmentRef || !parsed.hazards || !Array.isArray(parsed.hazards)) {
+          alert('Invalid assessment file format. Please ensure the file is a valid HIRA JSON export.');
+          return;
+        }
+
+        // Load the assessment
+        if (!trainedMode) setHelpOpen({ [parsed.currentStep || 1]: true });
+        setAssessment(parsed);
+        setSavedDraft(null);
+        window.scrollTo(0, 0);
+      } catch (err) {
+        alert(`Error loading file: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset the input so the same file can be uploaded again
+    event.target.value = '';
+  }
+
+  function continueDraft() {
+    if (!trainedMode) setHelpOpen({ [savedDraft.currentStep]: true });
+    setAssessment(savedDraft);
+    setSavedDraft(null);
+  }
+
   function update(fields) {
     setAssessment(prev => ({ ...prev, ...fields }));
   }
@@ -592,9 +629,20 @@ export default function HIRA_DWA() {
               </div>
             </div>
           ) : (
-            <button onClick={startNew} style={{ padding: '12px 36px', background: C.navy, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 16, fontFamily: C.font, marginBottom: 24 }}>
-              Start New Assessment
-            </button>
+            <>
+              <button onClick={startNew} style={{ padding: '12px 36px', background: C.navy, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 16, fontFamily: C.font, marginBottom: 24 }}>
+                Start New Assessment
+              </button>
+              
+              <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, padding: '18px 22px', marginBottom: 24, textAlign: 'center' }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Or Load a Previous Assessment</p>
+                <label style={{ display: 'inline-block', padding: '10px 24px', background: '#f0fdf4', color: '#16a34a', border: `2px solid #16a34a`, borderRadius: 6, fontWeight: 600, cursor: 'pointer', fontSize: 14, fontFamily: C.font, transition: 'background 0.2s' }}>
+                  Upload JSON File
+                  <input type="file" accept=".json" onChange={loadAssessmentFromJSON} style={{ display: 'none' }} />
+                </label>
+                <p style={{ fontSize: 12, color: C.muted, marginTop: 8 }}>Select a previously downloaded HIRA_*.json file to continue</p>
+              </div>
+            </>
           )}
 
           <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, padding: '14px 18px', marginTop: 8, textAlign: 'left' }}>

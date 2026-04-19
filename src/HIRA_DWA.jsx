@@ -14,43 +14,43 @@ const FUNCTIONAL_SEVERITY = [
 ];
 
 const FUNCTIONAL_PROBABILITY = [
-  { id: 'A', label: 'A — Frequent', description: 'Likely to occur many times. (>1×10⁻³ per flight hour)' },
-  { id: 'B', label: 'B — Occasional', description: 'Likely to occur several times. (1×10⁻³ to 1×10⁻⁴)' },
-  { id: 'C', label: 'C — Remote', description: 'Unlikely to occur but possible. (1×10⁻⁴ to 1×10⁻⁵)' },
-  { id: 'D', label: 'D — Improbable', description: 'Very unlikely to occur. (1×10⁻⁵ to 1×10⁻⁷)' },
-  { id: 'E', label: 'E — Very Improbable', description: 'Almost inconceivable that it would occur. (1×10⁻⁷ to 1×10⁻⁹)' },
-  { id: 'F', label: 'F — Extremely Improbable', description: 'Essentially impossible. (<1×10⁻⁹ per flight hour)' },
+  { id: 'A', label: 'A — Frequent', description: 'Likely to occur during a 6-week period, or 9 or more times per year. (Ps > 10⁻³)' },
+  { id: 'B', label: 'B — Probable', description: 'Likely to occur one or more times during the year, but less than 9 times per year. (10⁻³ ≥ Ps > 10⁻⁴)' },
+  { id: 'C', label: 'C — Occasional', description: 'Likely to occur less than once per year, or once in 14 months. (10⁻⁴ ≥ Ps > 10⁻⁵)' },
+  { id: 'D', label: 'D — Remote', description: 'Likely to occur once in 10-11 years. (10⁻⁵ ≥ Ps > 10⁻⁶)' },
+  { id: 'E', label: 'E — Improbable', description: 'Very unlikely to occur during the year. Up to 1 in 100 years. (10⁻⁶ ≥ Ps > 10⁻⁷)' },
+  { id: 'F', label: 'F — Extremely Improbable', description: 'Extremely unlikely to occur during the year. Up to 1 in 1000 years. (Ps ≥ 10⁻⁷)' },
 ];
 
 // Table 5 — Functional Risk Matrix (severity 1–5 × probability A–F → A/B/C/D)
 const FUNCTIONAL_RISK_MATRIX = {
-  '1': { A: 'A', B: 'A', C: 'A', D: 'A', E: 'B', F: 'C' },
-  '2': { A: 'A', B: 'A', C: 'A', D: 'B', E: 'C', F: 'D' },
-  '3': { A: 'A', B: 'A', C: 'B', D: 'C', E: 'D', F: 'D' },
-  '4': { A: 'A', B: 'B', C: 'C', D: 'D', E: 'D', F: 'D' },
+  '1': { A: 'A', B: 'A', C: 'A', D: 'A', E: 'D', F: 'D' },
+  '2': { A: 'A', B: 'A', C: 'B', D: 'C', E: 'D', F: 'D' },
+  '3': { A: 'A', B: 'B', C: 'C', D: 'D', E: 'D', F: 'D' },
+  '4': { A: 'B', B: 'C', C: 'C', D: 'D', E: 'D', F: 'D' },
   '5': { A: 'D', B: 'D', C: 'D', D: 'D', E: 'D', F: 'D' },
 };
 
 const NONFUNCTIONAL_SEVERITY = [
-  { id: 'CAT', label: 'Catastrophic', description: 'Fatalities or major accidents resulting from safety management failure.' },
-  { id: 'MAJ', label: 'Major', description: 'Serious injuries or significant disruption to operations.' },
-  { id: 'MIN', label: 'Minor', description: 'Minor injuries or limited disruption to operations.' },
-  { id: 'NEG', label: 'Negligible', description: 'Insignificant safety impact; no meaningful harm expected.' },
+  { id: 'CAT', label: 'Catastrophic', description: 'Very large impact in the capacity of the functioning of the Organisation, or in ATM/ANS capacity or safety. E.g. Inadequate resource/Loss of certificate/Safety margins critically impacted if unmanaged.' },
+  { id: 'MAJ', label: 'Major', description: 'Major reduction impact in the capacity of the functioning of the Organisation, or in ATM/ANS capacity or safety. E.g. Significantly reduced resource/Limited ability to meet certificated functions or services/Safety margins eroded if unmanaged.' },
+  { id: 'MIN', label: 'Minor', description: 'Slight impact in the capacity of the functioning of the Organisation, or in ATM/ANS capacity or safety. E.g. Reduced compliance/resources to provide service are affected - workloads increased/safety margins could be affected.' },
+  { id: 'NEG', label: 'Negligible', description: 'Negligible impact on ATM/ANS Service or functions. No impact on safety. Minor or no impact elsewhere, such as efficiency of management system.' },
 ];
 
 const NONFUNCTIONAL_PROBABILITY = [
-  { id: 'FREQ', label: 'Frequent', description: 'Likely to occur regularly under normal operating conditions.' },
-  { id: 'OCC', label: 'Occasional', description: 'May occur from time to time under normal operating conditions.' },
-  { id: 'RARE', label: 'Rare', description: 'Could occur under unusual operating conditions.' },
-  { id: 'VR', label: 'Very Rare', description: 'Very unlikely; may occur only in exceptional circumstances.' },
+  { id: 'FREQ', label: 'Frequent', description: 'Estimated to occur two or more times in a year.' },
+  { id: 'OCC', label: 'Occasional', description: 'Estimated to occur once per year.' },
+  { id: 'REM', label: 'Remote', description: 'Unlikely to occur during a year but may occur within 10 years.' },
+  { id: 'IMP', label: 'Improbable', description: 'Unlikely to occur within ten years nevertheless, an occurrence is considered possible / credible.' },
 ];
 
 // Table 10 — Non-Functional Risk Matrix
 const NONFUNCTIONAL_RISK_MATRIX = {
-  'CAT': { FREQ: 'High', OCC: 'High', RARE: 'High', VR: 'Medium' },
-  'MAJ': { FREQ: 'High', OCC: 'High', RARE: 'Medium', VR: 'Low' },
-  'MIN': { FREQ: 'Medium', OCC: 'Low', RARE: 'Low', VR: 'Low' },
-  'NEG': { FREQ: 'Low', OCC: 'Low', RARE: 'Low', VR: 'Low' },
+  'CAT': { FREQ: 'High', OCC: 'High', REM: 'High', IMP: 'Medium' },
+  'MAJ': { FREQ: 'High', OCC: 'High', REM: 'Medium', IMP: 'Low' },
+  'MIN': { FREQ: 'Medium', OCC: 'Low', REM: 'Low', IMP: 'Low' },
+  'NEG': { FREQ: 'Low', OCC: 'Low', REM: 'Low', IMP: 'Low' },
 };
 
 const RISK_COLOR = {
@@ -125,8 +125,8 @@ const HELP = {
     paragraphs: [
       'Probability estimates how likely a hazard is to occur given the current operational context and existing mitigations.',
       'Sources of data: historical occurrence records (safety reports, ECCAIRS, internal logs); expert judgment from operational staff; exposure frequency (how often the relevant operation is performed); comparison with similar operations.',
-      'Functional scale: A=Frequent (>10⁻³/fh), B=Occasional (10⁻³–10⁻⁴), C=Remote (10⁻⁴–10⁻⁵), D=Improbable (10⁻⁵–10⁻⁷), E=Very Improbable (10⁻⁷–10⁻⁹), F=Extremely Improbable (<10⁻⁹).',
-      'Non-Functional scale: Frequent (regularly under normal conditions), Occasional (from time to time), Rare (unusual conditions only), Very Rare (exceptional circumstances).',
+      'Functional scale: A=Frequent (Ps > 10⁻³), B=Probable (10⁻³ ≥ Ps > 10⁻⁴), C=Occasional (10⁻⁴ ≥ Ps > 10⁻⁵), D=Remote (10⁻⁵ ≥ Ps > 10⁻⁶), E=Improbable (10⁻⁶ ≥ Ps > 10⁻⁷), F=Extremely Improbable (Ps ≥ 10⁻⁷).',
+      'Non-Functional scale: Frequent (two or more times per year), Occasional (once per year), Remote (within 10 years), Improbable (exceptional circumstances).',
       '§2.5 Point to Note: Where two or more hazards could independently lead to the same accident/consequence, you must SUM their probabilities. Use the "Shared Consequence" toggle to mark hazards that share a consequence.',
     ],
   },
@@ -320,7 +320,7 @@ function RiskMatrixFunctional({ highlightSev, highlightProb }) {
 }
 
 function RiskMatrixNonFunctional({ highlightSev, highlightProb }) {
-  const probs = [{ id: 'FREQ', label: 'Frequent' }, { id: 'OCC', label: 'Occasional' }, { id: 'RARE', label: 'Rare' }, { id: 'VR', label: 'Very Rare' }];
+  const probs = [{ id: 'FREQ', label: 'Frequent' }, { id: 'OCC', label: 'Occasional' }, { id: 'REM', label: 'Remote' }, { id: 'IMP', label: 'Improbable' }];
   const sevs = [{ id: 'CAT', label: 'Cat.' }, { id: 'MAJ', label: 'Major' }, { id: 'MIN', label: 'Minor' }, { id: 'NEG', label: 'Neg.' }];
   return (
     <div style={{ overflowX: 'auto', marginTop: 8 }}>

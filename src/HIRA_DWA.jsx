@@ -23,10 +23,12 @@ const FUNCTIONAL_PROBABILITY = [
 ];
 
 // Table 5 — Functional Risk Matrix (severity 1–5 × probability A–F → A/B/C/D)
+// 5 rows (severity 1-5) × 6 columns (probability A-F)
+// Probability rows: A(AAABD), B(AABCD), C(ABCCD), D(ACCDD), E(ACDDD), F(ADDDD)
 const FUNCTIONAL_RISK_MATRIX = {
-  '1': { A: 'A', B: 'A', C: 'A', D: 'A', E: 'D', F: 'D' },
-  '2': { A: 'A', B: 'A', C: 'B', D: 'C', E: 'D', F: 'D' },
-  '3': { A: 'A', B: 'B', C: 'C', D: 'D', E: 'D', F: 'D' },
+  '1': { A: 'A', B: 'A', C: 'A', D: 'A', E: 'A', F: 'A' },
+  '2': { A: 'A', B: 'A', C: 'B', D: 'C', E: 'C', F: 'D' },
+  '3': { A: 'A', B: 'B', C: 'C', D: 'C', E: 'D', F: 'D' },
   '4': { A: 'B', B: 'C', C: 'C', D: 'D', E: 'D', F: 'D' },
   '5': { A: 'D', B: 'D', C: 'D', D: 'D', E: 'D', F: 'D' },
 };

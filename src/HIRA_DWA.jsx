@@ -286,26 +286,34 @@ function RiskBadge({ riskClass }) {
 function RiskMatrixFunctional({ highlightSev, highlightProb }) {
   const probs = ['A', 'B', 'C', 'D', 'E', 'F'];
   const sevs = ['1', '2', '3', '4', '5'];
+  const probLabels = {
+    A: 'A — Frequent',
+    B: 'B — Probable',
+    C: 'C — Occasional',
+    D: 'D — Remote',
+    E: 'E — Improbable',
+    F: 'F — Extremely Improbable'
+  };
   return (
     <div style={{ overflowX: 'auto', marginTop: 8 }}>
       <table style={{ borderCollapse: 'collapse', fontSize: 12, minWidth: 420 }}>
         <thead>
           <tr>
-            <th style={{ padding: '4px 8px', background: C.navy, color: '#fff', textAlign: 'center', border: '1px solid #4a6fa5' }}>Sev \ Prob</th>
-            {probs.map(p => (
-              <th key={p} style={{ padding: '4px 8px', background: highlightProb === p ? '#2563eb' : C.navy, color: '#fff', textAlign: 'center', border: '1px solid #4a6fa5' }}>{p}</th>
+            <th style={{ padding: '4px 8px', background: C.navy, color: '#fff', textAlign: 'center', border: '1px solid #4a6fa5' }}>Prob \ Sev</th>
+            {sevs.map(sv => (
+              <th key={sv} style={{ padding: '4px 8px', background: highlightSev === sv ? '#2563eb' : C.navy, color: '#fff', textAlign: 'center', border: '1px solid #4a6fa5' }}>{sv}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {sevs.map(sv => (
-            <tr key={sv}>
-              <td style={{ padding: '4px 8px', background: highlightSev === sv ? '#2563eb' : C.navy, color: '#fff', fontWeight: 600, textAlign: 'center', border: '1px solid #4a6fa5' }}>{sv}</td>
-              {probs.map(p => {
+          {probs.map(p => (
+            <tr key={p}>
+              <td style={{ padding: '4px 8px', background: highlightProb === p ? '#2563eb' : C.navy, color: '#fff', fontWeight: 600, textAlign: 'center', border: '1px solid #4a6fa5', fontSize: 11 }}>{probLabels[p]}</td>
+              {sevs.map(sv => {
                 const rc = FUNCTIONAL_RISK_MATRIX[sv][p];
                 const isHighlight = highlightSev === sv && highlightProb === p;
                 return (
-                  <td key={p} style={{
+                  <td key={sv} style={{
                     padding: '4px 8px',
                     textAlign: 'center',
                     background: isHighlight ? '#1e293b' : RISK_COLOR[rc],

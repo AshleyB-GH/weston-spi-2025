@@ -184,6 +184,20 @@ function calcRisk(changeType, severity, probability) {
   return (NONFUNCTIONAL_RISK_MATRIX[severity] || {})[probability] || '';
 }
 
+function downloadAssessmentJSON(assessment) {
+  const jsonString = JSON.stringify(assessment, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `HIRA_${assessment.assessmentRef}_${assessment.assessmentDate}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+
 function makeAssessmentRef() {
   const counter = parseInt(localStorage.getItem('dwa-hira-counter') || '0', 10) + 1;
   localStorage.setItem('dwa-hira-counter', String(counter));
@@ -417,18 +431,24 @@ function HelpPanel({ step, isOpen, onToggle }) {
 
 const PRINT_CSS = `
 @media print {
-  body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10pt; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html { font-size: 9pt; }
+  body { margin: 0; padding: 10px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9pt; line-height: 1.4; }
   .no-print { display: none !important; }
   .print-only { display: block !important; }
   .print-table-container { display: block !important; }
   .print-page-break { page-break-after: always; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { border: 1px solid #333; padding: 4px 6px; font-size: 9pt; }
-  th { background: #1e3a5f !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 12px; font-size: 8.5pt; }
+  thead tr { display: table-row; page-break-inside: avoid; }
+  tbody tr { page-break-inside: avoid; }
+  th { background: #1e3a5f !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 6px 4px; text-align: left; font-weight: bold; font-size: 8pt; border: 1px solid #1e3a5f; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
+  td { padding: 6px 4px; border: 1px solid #d1d5db; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; vertical-align: top; font-size: 8pt; }
   .risk-badge-print { font-weight: bold; }
-  .print-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .print-header img { height: 40px; }
-  .print-section-title { font-size: 12pt; font-weight: bold; color: #1e3a5f; margin: 12px 0 6px 0; border-bottom: 2px solid #1e3a5f; padding-bottom: 3px; }
+  .print-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; page-break-inside: avoid; }
+  .print-header img { height: 36px; }
+  .print-section-title { font-size: 11pt; font-weight: bold; color: #1e3a5f; margin: 14px 0 8px 0; border-bottom: 2px solid #1e3a5f; padding-bottom: 4px; page-break-after: avoid; }
+  h1, h2, h3 { page-break-after: avoid; }
+  p { page-break-inside: avoid; margin: 6px 0; }
 }
 @media screen {
   .print-only { display: none; }
@@ -1179,6 +1199,9 @@ export default function HIRA_DWA() {
             <button onClick={() => window.print()} style={{ padding: '10px 24px', background: C.navy, color: '#fff', border: 'none', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 14, fontFamily: C.font }}>
               Print / Save as PDF
             </button>
+            <button onClick={() => downloadAssessmentJSON(a)} style={{ padding: '10px 24px', background: '#16a34a', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 700, cursor: 'pointer', fontSize: 14, fontFamily: C.font }}>
+              Download as JSON
+            </button>
             <button onClick={() => { if (window.confirm('Start a new assessment? This will clear all current data.')) { localStorage.removeItem('dwa-hira-draft'); setAssessment(null); setSavedDraft(null); } }} style={{ padding: '10px 20px', background: C.white, color: C.navy, border: `1px solid ${C.border}`, borderRadius: 6, fontWeight: 600, cursor: 'pointer', fontSize: 14, fontFamily: C.font }}>
               New Assessment
             </button>
@@ -1256,7 +1279,7 @@ export default function HIRA_DWA() {
             </div>
           </div>
 
-          <div style={{ overflowX: 'auto' }}>
+          <div style={{ overflowX: 'auto', marginBottom: 16 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
               <thead>
                 <tr>

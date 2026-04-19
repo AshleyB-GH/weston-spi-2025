@@ -23,10 +23,16 @@ const FUNCTIONAL_PROBABILITY = [
 ];
 
 // Table 5 — Functional Risk Matrix (severity 1–5 × probability A–F)
-// Correct values from riskdocx.md Table 9 (Risk Classification Matrix)
-// Severity 1-5 rows × Probability A-F (Frequent, Probable, Occasional, Remote, Improbable, Extremely Improbable)
+// 5 columns (Severity 1-5) × 6 rows (Probability: Frequent, Probable, Occasional, Remote, Improbable, Extremely Improbable)
+// Row patterns from riskdocx.md Table 9:
+// Frequent (A):           AAABD
+// Probable (B):           AABCD
+// Occasional (C):         ABCCD
+// Remote (D):             ACCDD
+// Improbable (E):         ACDDD
+// Extremely Improbable (F): ADDDD
 const FUNCTIONAL_RISK_MATRIX = {
-  '1': { A: 'A', B: 'A', C: 'A', D: 'B', E: 'A', F: 'D' },
+  '1': { A: 'A', B: 'A', C: 'A', D: 'A', E: 'A', F: 'A' },
   '2': { A: 'A', B: 'A', C: 'B', D: 'C', E: 'C', F: 'D' },
   '3': { A: 'A', B: 'B', C: 'C', D: 'C', E: 'D', F: 'D' },
   '4': { A: 'B', B: 'C', C: 'C', D: 'D', E: 'D', F: 'D' },

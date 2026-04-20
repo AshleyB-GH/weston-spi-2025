@@ -110,7 +110,9 @@ const SPI_LABELS = {"AI":"Airspace Infringements","Dev":"Deviation from ATC Clea
 const ANS_SPI_COLORS = ["#0ea5e9","#38bdf8","#7dd3fc","#0284c7","#075985"];
 const ADR_SPI_COLORS = ["#f97316","#fb923c","#fdba74","#ea580c","#c2410c"];
 
-export default function App() {
+export default function App({ appData = {} }) {
+  // Use uploaded data if available, otherwise fall back to hardcoded RAW data
+  const dataSource = Object.keys(appData).length > 0 ? appData : RAW;
   const [yearFilter, setYearFilter] = useState("All");
   const [quarterFilter, setQuarterFilter] = useState("All");
   const [unitFilter, setUnitFilter] = useState("Both");
@@ -124,7 +126,7 @@ export default function App() {
       .catch(() => {});
   }, []);
 
-  const data = liveData || RAW;
+  const data = liveData || dataSource;
 
   const availableYears = useMemo(() => {
     const years = new Set(data.quarters.map(q => q.split("-")[0]));

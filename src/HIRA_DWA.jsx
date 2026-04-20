@@ -459,7 +459,8 @@ const PRINT_CSS = `
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════════════
 
-export default function HIRA_DWA() {
+export default function HIRA_DWA({ appData = {} }) {
+  // appData can be used if HIRA assessment data structure is compatible with uploaded data
   const [assessment, setAssessment] = useState(null);
   const [savedDraft, setSavedDraft] = useState(null);
   const [trainedMode, setTrainedMode] = useState(false);

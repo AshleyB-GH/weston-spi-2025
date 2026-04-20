@@ -291,7 +291,7 @@ function App() {
       </div>
 
       {/* Tab Content */}
-      {tab === "spi" ? <WestonSPI2025 /> : <HIRA_DWA />}
+      {tab === "spi" ? <WestonSPI2025 appData={appData} /> : <HIRA_DWA appData={appData} />}
     </div>
   );
 }

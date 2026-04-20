@@ -1,0 +1,37 @@
+# Critical files that should NOT be edited by Copilot
+# This prevents accidental corruption of essential project files
+
+# Public assets and HTML templates
+public/index.html
+public/manifest.json
+public/robots.txt
+
+# Package and config files
+package.json
+package-lock.json
+.gitignore
+.env
+.env.local
+
+# Build and cache directories (these will be regenerated)
+build/
+node_modules/
+.git/
+.cache/
+
+# Critical configuration
+tsconfig.json
+jest.config.js
+forge.config.js
+
+# Documentation
+README.md
+SECURITY.md
+CONTRIBUTING.md
+
+# Test files that shouldn't be overwritten
+test-upload.js
+test-integration.js
+
+# Version control
+.gitattributes

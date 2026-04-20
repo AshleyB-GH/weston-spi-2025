@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Extract tables from riskdocx.md",
+			"type": "shell",
+			"command": "sed -n '1295,1360p' /home/ashley/Documents/Repositories/weston-spi-2025/docs/riskdocx.md"
+		}
+	]
+}

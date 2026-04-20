@@ -539,11 +539,7 @@ export default function HIRA_DWA() {
     event.target.value = '';
   }
 
-  function continueDraft() {
-    if (!trainedMode) setHelpOpen({ [savedDraft.currentStep]: true });
-    setAssessment(savedDraft);
-    setSavedDraft(null);
-  }
+
 
   function update(fields) {
     setAssessment(prev => ({ ...prev, ...fields }));

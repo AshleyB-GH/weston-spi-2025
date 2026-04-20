@@ -1,0 +1,2 @@
+#!/bin/sh
+xdg-open /usr/share/weston-spi-2025/index.html

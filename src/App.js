@@ -49,10 +49,10 @@ function App() {
   const [appData, setAppData] = useState(() => {
     try {
       const raw = window.localStorage.getItem("myAppData");
-      return raw ? JSON.parse(raw) : { /* your default shape */ };
+      return raw ? JSON.parse(raw) : {};
     } catch (e) {
       console.warn("Could not parse saved JSON", e);
-      return { /* fallback/default shape */ };
+      return {};
     }
   });
 
@@ -110,7 +110,7 @@ function App() {
           style={{ marginBottom: "1rem" }}
         />
         <p>
-          Pick a {@code .json} file you previously saved (e.g., via a download
+          Pick a <code>.json</code> file you previously saved (e.g., via a download
           button) and the app will reload its state.
         </p>
       </div>
